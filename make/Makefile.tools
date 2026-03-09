@@ -23,6 +23,9 @@ export PATH:=$(TOOLS)/musl-cross/bin:$(TOOLS_BIN):$(PATH)
 
 ifneq (,$(findstring darwin,$(TARGET)))
     LDFLAGS:=$(LDFLAGS) -framework Foundation -framework AVFoundation -framework CoreMedia -framework CoreImage -framework CoreVideo
+    # Work around dyld assertion failures on newer macOS by disabling chained fixups.
+    # This keeps the Mach-O using legacy fixups that app2dylib can handle.
+    LDFLAGS:=$(LDFLAGS) -Wl,-no_fixup_chains
     ifneq (,$(findstring iphone,$(TARGET)))
         SDKROOT:=$(shell xcrun --sdk iphoneos --show-sdk-path)
         LDFLAGS:=$(LDFLAGS) -framework UIKit -framework CoreGraphics
