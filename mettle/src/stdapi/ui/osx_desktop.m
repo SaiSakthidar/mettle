@@ -3,6 +3,15 @@
 #include "tlv.h"
 #include "ui.h"
 
+#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 150000
+struct tlv_packet *desktop_screenshot(struct tlv_handler_ctx *ctx)
+{
+  /* CGDisplayCreateImage is unavailable in the macOS 15 SDK. Keep the build
+   * green until this path is migrated to ScreenCaptureKit.
+   */
+  return tlv_packet_response_result(ctx, TLV_RESULT_FAILURE);
+}
+#else
 struct tlv_packet *desktop_screenshot(struct tlv_handler_ctx *ctx)
 {
   struct tlv_packet *p;
@@ -27,3 +36,4 @@ struct tlv_packet *desktop_screenshot(struct tlv_handler_ctx *ctx)
   }
   return p;
 }
+#endif
