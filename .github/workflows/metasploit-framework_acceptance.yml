@@ -41,7 +41,7 @@ on:
 
 jobs:
   build:
-    uses: SaiSakthidar/metasploit-framework/.github/workflows/shared_meterpreter_acceptance.yml@php-meterpreter-tcp-server-tests
+    uses: SaiSakthidar/metasploit-framework/.github/workflows/shared_meterpreter_acceptance.yml@fix/mettle-macos-15-sigabrt
     with:
       metasploit_framework_commit: ${{ github.event.inputs.metasploitFrameworkCommit }}
       build_mettle: true
