@@ -75,6 +75,15 @@ $(BUILD)/bin/mettle.bin: $(BUILD)/bin/mettle.built
 $(BUILD)/bin/mettle.dylib: $(BUILD)/bin/mettle.built
 	@./deps/app2dylib -o $(BUILD)/bin/mettle.dylib $(BUILD)/bin/mettle
 	@./deps/ldid2 -S $(BUILD)/bin/mettle.dylib
+	@if command -v file >/dev/null 2>&1; then file $(BUILD)/bin/mettle $(BUILD)/bin/mettle.dylib > $(BUILD)/bin/mettle.macho.file.txt; fi
+	@if command -v otool >/dev/null 2>&1; then otool -hv $(BUILD)/bin/mettle > $(BUILD)/bin/mettle.macho.header.txt; fi
+	@if command -v otool >/dev/null 2>&1; then otool -l $(BUILD)/bin/mettle > $(BUILD)/bin/mettle.macho.load_commands.txt; fi
+	@if command -v otool >/dev/null 2>&1; then otool -dyld_info $(BUILD)/bin/mettle > $(BUILD)/bin/mettle.macho.dyld_info.txt || true; fi
+	@if command -v vtool >/dev/null 2>&1; then vtool -show $(BUILD)/bin/mettle > $(BUILD)/bin/mettle.macho.vtool.txt || true; fi
+	@if command -v otool >/dev/null 2>&1; then otool -hv $(BUILD)/bin/mettle.dylib > $(BUILD)/bin/mettle.dylib.header.txt; fi
+	@if command -v otool >/dev/null 2>&1; then otool -l $(BUILD)/bin/mettle.dylib > $(BUILD)/bin/mettle.dylib.load_commands.txt; fi
+	@if command -v otool >/dev/null 2>&1; then otool -dyld_info $(BUILD)/bin/mettle.dylib > $(BUILD)/bin/mettle.dylib.dyld_info.txt || true; fi
+	@if command -v vtool >/dev/null 2>&1; then vtool -show $(BUILD)/bin/mettle.dylib > $(BUILD)/bin/mettle.dylib.vtool.txt || true; fi
 
 $(BUILD)/bin/mettle.sha1.dylib: $(BUILD)/bin/mettle.built
 	@./deps/app2dylib -o $(BUILD)/bin/mettle.sha1.dylib $(BUILD)/bin/mettle
